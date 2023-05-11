@@ -30,22 +30,24 @@ else:
 
 if 'llm_chain' not in st.session_state:
     if (len(sys.argv) > 1):
-        if (sys.argv[1] == 'anthropic'):
+        selected_provider = sys.argv[1]
+        if (selected_provider == 'anthropic'):
             st.session_state['llm_app'] = anthropic
             st.session_state['llm_chain'] = anthropic.build_chain()
-        elif (sys.argv[1] == 'flanxl'):
+        elif (selected_provider == 'flanxl'):
             st.session_state['llm_app'] = flanxl
             st.session_state['llm_chain'] = flanxl.build_chain()
-        elif (sys.argv[1] == 'flanxxl'):
+        elif (selected_provider == 'flanxxl'):
             st.session_state['llm_app'] = flanxxl
             st.session_state['llm_chain'] = flanxxl.build_chain()
-        elif (sys.argv[1] == 'openai'):
+        elif (selected_provider == 'openai'):
             st.session_state['llm_app'] = openai
             st.session_state['llm_chain'] = openai.build_chain()
         else:
-            raise Exception("Unsupported LLM: ", sys.argv[1])
+            raise Exception("Unsupported LLM: ", selected_provider)
     else:
         # default to anthropic
+        selected_provider = 'anthropic'
         st.session_state['llm_app'] = anthropic
         st.session_state['llm_chain'] = anthropic.build_chain()
         #raise Exception("Usage: streamlit run app.py <anthropic|flanxl|flanxxl|openai>")
@@ -102,7 +104,7 @@ def write_top_bar():
         st.image(AI_ICON, use_column_width='always')
     with col2:
         #selected_provider = sys.argv[1]
-        selected_provider = st.session_state['llm_app'] 
+        # selected_provider = st.session_state['llm_app'] 
         if selected_provider in PROVIDER_MAP:
             provider = PROVIDER_MAP[selected_provider]
         else:
