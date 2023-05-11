@@ -27,7 +27,8 @@ else:
     user_id = str(uuid.uuid4())
     st.session_state['user_id'] = user_id
 
-
+# default provider
+selected_provider = 'anthropic'
 if 'llm_chain' not in st.session_state:
     if (len(sys.argv) > 1):
         selected_provider = sys.argv[1]
@@ -47,7 +48,6 @@ if 'llm_chain' not in st.session_state:
             raise Exception("Unsupported LLM: ", selected_provider)
     else:
         # default to anthropic
-        selected_provider = 'anthropic'
         st.session_state['llm_app'] = anthropic
         st.session_state['llm_chain'] = anthropic.build_chain()
         #raise Exception("Usage: streamlit run app.py <anthropic|flanxl|flanxxl|openai>")
@@ -103,8 +103,7 @@ def write_top_bar():
     with col1:
         st.image(AI_ICON, use_column_width='always')
     with col2:
-        #selected_provider = sys.argv[1]
-        # selected_provider = st.session_state['llm_app'] 
+        selected_provider = sys.argv[1]
         if selected_provider in PROVIDER_MAP:
             provider = PROVIDER_MAP[selected_provider]
         else:
