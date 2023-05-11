@@ -8,8 +8,8 @@ import kendra_chat_flan_xxl as flanxxl
 import kendra_chat_open_ai as openai
 
 
-USER_ICON = "images/user-icon.png"
-AI_ICON = "images/ai-icon.png"
+USER_ICON = "samples/images/user-icon.png"
+AI_ICON = "samples/images/ai-icon.png"
 MAX_HISTORY_LENGTH = 5
 PROVIDER_MAP = {
     'openai': 'Open AI',
