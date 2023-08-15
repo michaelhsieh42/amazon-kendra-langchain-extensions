@@ -23,23 +23,23 @@ def build_chain():
   region = os.environ["AWS_REGION"]
   kendra_index_id = os.environ["KENDRA_INDEX_ID"]
 
-  llm = Anthropic(temperature=0, anthropic_api_key=ANTHROPIC_API_KEY)
-      
+  llm = Anthropic(temperature=0, max_tokens_to_sample=500, anthropic_api_key=ANTHROPIC_API_KEY) # model='claude-2'
+
   retriever = KendraIndexRetriever(kendraindex=kendra_index_id, 
       awsregion=region, 
       return_source_documents=True)
 
   prompt_template = """
-  The following is a friendly conversation between a human and an AI. 
+  The following is a friendly conversation between a medical science liaison and an AI. 
   The AI is talkative and provides lots of specific details from its context.
-  If the AI does not know the answer to a question, it truthfully says it 
-  does not know.
   {context}
-  Question: Based on the above documents, provide a detailed answer for, {question} Answer "don't know" if not present in the document. Answer:
+  Question: Based on the above documents, provide a detailed answer for, {question}. Answer:
   """
   PROMPT = PromptTemplate(
       template=prompt_template, input_variables=["context", "question"]
   )
+  # If the AI does not know the answer to a question, it truthfully says it does not know. 
+  # Answer "don't know" if not present in the document.
 
   qa = ConversationalRetrievalChain.from_llm(llm=llm, retriever=retriever, qa_prompt=PROMPT, return_source_documents=True)
   return qa
